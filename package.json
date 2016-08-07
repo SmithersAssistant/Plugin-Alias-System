@@ -1,6 +1,6 @@
 {
   "name": "smithers-alias",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An alias plugin for the Smithers Assistant",
   "main": "dist/index.js",
   "keywords": [
@@ -11,9 +11,6 @@
   ],
   "author": "Robin Malfait <malfait.robin@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "react": "^15.0.0"
-  },
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-plugin-syntax-object-rest-spread": "^6.8.0",
