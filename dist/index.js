@@ -70,20 +70,32 @@ exports.default = function (robot) {
         return aliases.all();
       }
     }
-  }, function (res) {
-    var alias = aliases.find(res.matches[1]);
+  }, function (_ref) {
+    var matches = _ref.matches;
+    var alias = matches.alias;
+
+    var result = /([a-zA-Z0-9_]*) ?(.*)?/.exec(alias);
+
+    var command = result[1];
+    var args = result[2];
+
+    alias = aliases.find(command);
 
     if (alias) {
-      robot.execute(alias);
+      robot.execute([alias, args].filter(function (x) {
+        return !!x;
+      }).join(' '));
     }
   });
 
   robot.listen(/^alias ([a-zA-Z0-9_]*) (.*)$/, {
     description: 'Register an alias',
     usage: 'alias <alias> <command>'
-  }, function (res) {
-    var alias = res.matches[1];
-    var command = res.matches[2];
+  }, function (_ref2) {
+    var matches = _ref2.matches;
+    var alias = matches.alias;
+    var command = matches.command;
+
 
     var persisted = aliases.register(alias, command);
 
@@ -102,8 +114,10 @@ exports.default = function (robot) {
         return aliases.all();
       }
     }
-  }, function (res) {
-    var alias = res.matches[1];
+  }, function (_ref3) {
+    var matches = _ref3.matches;
+    var alias = matches.alias;
+
 
     aliases.unregister(alias);
     robot.notify('unregistered alias \'' + alias + '\'');

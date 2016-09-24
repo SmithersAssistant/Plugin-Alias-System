@@ -8,7 +8,9 @@ class AliasSystem {
   find(alias) {
     const key = Object.keys(this.aliases).find(a => a === alias);
 
-    return key ? this.aliases[key] : undefined;
+    return key
+      ? this.aliases[key]
+      : undefined;
   }
 
   all() {
@@ -47,20 +49,25 @@ export default robot => {
         return aliases.all();
       }
     }
-  }, (res) => {
-    const alias = aliases.find(res.matches[1]);
+  }, ({ matches }) => {
+    let { alias } = matches
+    const result = /([a-zA-Z0-9_]*) ?(.*)?/.exec(alias)
+
+    let command = result[1]
+    let args = result[2]
+
+    alias = aliases.find(command)
 
     if (alias) {
-      robot.execute(alias);
+      robot.execute([alias, args].filter(x => !!x).join(' '));
     }
   });
 
   robot.listen(/^alias ([a-zA-Z0-9_]*) (.*)$/, {
     description: 'Register an alias',
     usage: 'alias <alias> <command>'
-  }, (res) => {
-    const alias = res.matches[1];
-    const command = res.matches[2];
+  }, ({ matches }) => {
+    const { alias, command } = matches
 
     const persisted = aliases.register(alias, command);
 
@@ -79,8 +86,8 @@ export default robot => {
         return aliases.all();
       }
     }
-  }, (res) => {
-    const alias = res.matches[1];
+  }, ({ matches }) => {
+    const { alias } = matches
 
     aliases.unregister(alias);
     robot.notify(`unregistered alias '${alias}'`);

@@ -1,6 +1,6 @@
 {
   "name": "smithers-alias",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "An alias plugin for the Smithers Assistant",
   "main": "dist/index.js",
   "repository": {
